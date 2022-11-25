@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../src/App.css";
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
 function App() {
   //make a toogle for show name
   // const [gallery, setGallery] = useState([]);
@@ -30,12 +30,18 @@ function App() {
 
   //Two-way-binding(11/23/2022)
   const [book, setBook] = useState("");
-  const [url, setUrl] = useState('')
-  const handleFormSubmit = (e) =>{
+  const [url, setUrl] = useState("");
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    const id = nanoid();
-    console.log(book , url);
-  }
+    // const id = nanoid();
+    if (!book.trim() || !url.trim()) {
+      alert("Write Something in the input fields!");
+      return;
+    } else {
+      console.log(book, url);
+    }
+   
+  };
 
   return (
     <div>
@@ -49,8 +55,20 @@ function App() {
       <div className="container text-center ">
         <form onSubmit={handleFormSubmit} className="container mt-3 w-25 ">
           <h1>Gallery</h1>
-          <input type="text" value={book} onChange={(e)=> setBook(e.target.value)} className="form-control mb-3" placeholder="Book name" />
-          <input type="text" value={url} onChange={(e)=> setUrl(e.target.value)} className="form-control" placeholder="Url" />
+          <input
+            type="text"
+            value={book}
+            onChange={(e) => setBook(e.target.value)}
+            className="form-control mb-3"
+            placeholder="Book name"
+          />
+          <input
+            type="text"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            className="form-control"
+            placeholder="Url"
+          />
           <button className="btn btn-success btn-lg mt-3">Create</button>
         </form>
       </div>
