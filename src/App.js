@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../src/App.css";
 // import { nanoid } from "nanoid";
+import loader from "../src/assests/infinity_loader.gif";
 function App() {
   //make a toogle for show name
   // const [gallery, setGallery] = useState([]);
@@ -29,7 +30,11 @@ function App() {
   // console.log(gallery);
 
   //Two-way-binding(11/23/2022)
+
+  const [gallery, setGallery] = useState([]);
+
   const [book, setBook] = useState("");
+  const [desc, setDesc] = useState("");
   const [url, setUrl] = useState("");
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -37,14 +42,35 @@ function App() {
     if (!book.trim() || !url.trim()) {
       alert("Write Something in the input fields!");
       return;
-    } else {
-      console.log(book, url);
     }
-   
+
+    const newData = { book, desc, url };
+    setGallery([...gallery, newData]);
+    setBook("");
+    setDesc("");
+    setUrl("");
   };
 
+  let showData = (
+    <p className="container w-100 text-center ">
+      <img width={150} src={loader} alt="..." />
+    </p>
+  );
+
+  if (gallery.length > 0) {
+    showData = gallery.map((e, i) => (
+      <div className="card" key={i} style={{ width: "18rem" }}>
+        <img src={e.url} className="card-img-top me-3 mb-3" alt="..." />
+        <div className="card-body">
+          <h5 className="card-title">{e.book}</h5>
+          <p className="card-text">{e.desc}</p>
+        </div>
+      </div>
+    ));
+  }
+
   return (
-    <div>
+    <>
       {/* <form onSubmit={handleFormSubmit}>
         <input type="text" placeholder="Type the Author Name" />
         <input type="text" placeholder="Url" />
@@ -53,14 +79,21 @@ function App() {
       <ul>{lo}</ul> */}
 
       <div className="container text-center ">
-        <form onSubmit={handleFormSubmit} className="container mt-3 w-25 ">
-          <h1>Gallery</h1>
+        <form onSubmit={handleFormSubmit} className="container w-25 mt-2">
+          <h1>Gallery📸</h1>
           <input
             type="text"
             value={book}
             onChange={(e) => setBook(e.target.value)}
             className="form-control mb-3"
             placeholder="Book name"
+          />
+          <input
+            type="text"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            className="form-control mb-3"
+            placeholder="Desc"
           />
           <input
             type="text"
@@ -71,9 +104,10 @@ function App() {
           />
           <button className="btn btn-success btn-lg mt-3">Create</button>
         </form>
+        <hr className="container mt-3" />
       </div>
-      <hr className="container mt-3" />
-    </div>
+      <div className="container d-flex flex-wrap gap-3">{showData}</div>
+    </>
   );
 }
 
